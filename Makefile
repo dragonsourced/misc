@@ -20,8 +20,7 @@ ${EXE}: ${OBJ}
 	${CC} ${OBJ} ${CLFAGS} ${LDFLAGS} ${LIBS} -o ${EXE}
 
 install: ${EXE}
-	mkdir -p ${BINDIR}
-	mv ${EXE} ${BINDIR}/${EXE}
+	install -D ${EXE} ${BINDIR}/${EXE}
 
 uninstall:
 	rm -f ${BINDIR}/${EXE}
