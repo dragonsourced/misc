@@ -7,7 +7,7 @@ OBJ != echo ${SRC} | sed 's/.c\b/.o/g'
 
 CFLAGS  = -Wall
 LDFLAGS =
-LIBS    = -llua5.1
+LIBS    =
 
 default: ${EXE}
 
