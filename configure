@@ -1,7 +1,7 @@
 #!/bin/sh
 
-CFLAGS=
-LDFLAGS=
+CFLAGS=${CFLAGS:-}
+LDFLAGS=${LDFLAGS:-}
 LIBS=
 EXE=run
 
@@ -16,17 +16,18 @@ repl() {
 }
 
 MKFILE=Makefile
+OFILE=${*:-$MKFILE}
 TMPFILE=tmp.mk
 
 for lib in ${LIBS}; do
     LDFLAGS="${LDFLAGS} -l${lib}"
 done
 
-repl CFLAGS ${CFLAGS} < ${MKFILE}   |
+repl CFLAGS "${CFLAGS}" < ${MKFILE} |
     repl LDFLAGS "${LDFLAGS}"       |
     repl OBJ     "${OBJ}"           |
     repl CFLAGS  "${CFLAGS}"        |
     repl EXE     ${EXE}             |
-    tee /dev/stderr ${TMPFILE}
+    tee ${TMPFILE}
 
-mv ${TMPFILE} ${MKFILE}
+mv ${TMPFILE} "${OFILE}"
