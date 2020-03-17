@@ -2,7 +2,7 @@
 
 CFLAGS=${CFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
-LIBS=ncursesw
+LIBS=
 EXE=${EXE:-run}
 
 src() {
@@ -29,7 +29,7 @@ repl CFLAGS "${CFLAGS}" < ${MKFILE} |
     repl LDFLAGS "${LDFLAGS}"       |
     repl OBJ     "${OBJ}"           |
     repl CFLAGS  "${CFLAGS}"        |
-    repl EXE     ${EXE}             > ${TMPFILE}
+    repl EXE     "${EXE}"           > ${TMPFILE}
 
 echo "$0 > ${OFILE}"
 
