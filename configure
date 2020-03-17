@@ -2,7 +2,7 @@
 
 CFLAGS=${CFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
-LIBS=
+LIBS=ncursesw
 EXE=${EXE:-run}
 
 src() {
@@ -22,7 +22,7 @@ TMPFILE=tmp.mk
 [ "${OFILE}" = - ] && OFILE=/dev/stdout
 
 for lib in ${LIBS}; do
-    LDFLAGS="${LDFLAGS} -l${lib}"
+    LDFLAGS="${LDFLAGS}-l${lib} "
 done
 
 repl CFLAGS "${CFLAGS}" < ${MKFILE} |
