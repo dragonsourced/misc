@@ -3,7 +3,7 @@
 CFLAGS=${CFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
 LIBS=
-EXE=run
+EXE=${EXE:-run}
 
 src() {
     find . -name '*.c' | tr ' ' '\n' | sed 's|^\./||'
@@ -34,3 +34,4 @@ repl CFLAGS "${CFLAGS}" < ${MKFILE} |
 echo "$0 > ${OFILE}"
 
 cat ${TMPFILE} > "${OFILE}"
+rm ${TMPFILE}
