@@ -19,6 +19,8 @@ MKFILE=Makefile
 OFILE=${*:-$MKFILE}
 TMPFILE=tmp.mk
 
+[ "${OFILE}" = - ] && OFILE=/dev/stdout
+
 for lib in ${LIBS}; do
     LDFLAGS="${LDFLAGS} -l${lib}"
 done
@@ -27,7 +29,8 @@ repl CFLAGS "${CFLAGS}" < ${MKFILE} |
     repl LDFLAGS "${LDFLAGS}"       |
     repl OBJ     "${OBJ}"           |
     repl CFLAGS  "${CFLAGS}"        |
-    repl EXE     ${EXE}             |
-    tee ${TMPFILE}
+    repl EXE     ${EXE}             > ${TMPFILE}
 
-mv ${TMPFILE} "${OFILE}"
+echo "$0 > ${OFILE}"
+
+cat ${TMPFILE} > "${OFILE}"
