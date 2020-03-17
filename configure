@@ -1,0 +1,32 @@
+#!/bin/sh
+
+CFLAGS=
+LDFLAGS=
+LIBS=
+EXE=run
+
+src() {
+    find . -name '*.c' | tr ' ' '\n' | sed 's|^\./||'
+}
+
+OBJ=$(src | sed 's/\.c$/.o/g' | tr '\n' ' ')
+
+repl() {
+    sed -e "s/^$1.*$/$1 = $2/"
+}
+
+MKFILE=Makefile
+TMPFILE=tmp.mk
+
+for lib in ${LIBS}; do
+    LDFLAGS="${LDFLAGS} -l${lib}"
+done
+
+repl CFLAGS ${CFLAGS} < ${MKFILE}   |
+    repl LDFLAGS "${LDFLAGS}"       |
+    repl OBJ     "${OBJ}"           |
+    repl CFLAGS  "${CFLAGS}"        |
+    repl EXE     ${EXE}             |
+    tee /dev/stderr ${TMPFILE}
+
+mv ${TMPFILE} ${MKFILE}

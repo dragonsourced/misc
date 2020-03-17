@@ -1,26 +1,10 @@
-CC     ?= c99
-BINDIR ?= ../bin
-EXE     = run
-
-SRC != find -name '*.c'
-OBJ != echo ${SRC} | sed 's/.c\b/.o/g'
-
-CFLAGS  = -Wall
-LDFLAGS =
-LIBS    =
-
-default: ${EXE}
-
-OBJS != find -name '*.o'
-
-clean:
-	rm -f ${OBJS} ${EXE}
+CFLAGS
+LDFLAGS
+OBJ
+EXE
 
 ${EXE}: ${OBJ}
-	${CC} ${OBJ} ${CLFAGS} ${LDFLAGS} ${LIBS} -o ${EXE}
+	${CC} ${CFLAGS} ${LDFLAGS} ${OBJ} -o ${EXE}
 
-install: ${EXE}
-	install -D ${EXE} ${BINDIR}/${EXE}
-
-uninstall:
-	rm -f ${BINDIR}/${EXE}
+clean:
+	rm -f ${OBJ} ${EXE}
