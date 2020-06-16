@@ -14,13 +14,15 @@ _cmd() {
 CFLAGS='-std=c99 -Wall -pedantic'
 LDFLAGS='-lcurses'
 
-if _cmd clang; then
-	CC='clang'
-	CFLAGS='-std=c99 -Weverything'
-elif _cmd gcc; then
-	CC='gcc'
-else
-	CC='c99'
+if ! [ "$CC" ]; then
+	if _cmd clang; then
+		CC='clang'
+		CFLAGS='-std=c99 -Weverything'
+	elif _cmd gcc; then
+		CC='gcc'
+	else
+		CC='cc'
+	fi
 fi
 
 cat <<EOF > Makefile
