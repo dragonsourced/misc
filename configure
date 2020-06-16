@@ -1,37 +1,33 @@
 #!/bin/sh
 
-CFLAGS=${CFLAGS:-}
-LDFLAGS=${LDFLAGS:-}
-LIBS=
-EXE=${EXE:-run}
+EXE=${EXE:-a.out}
 
-src() {
-    find . -name '*.c' | tr ' ' '\n' | sed 's|^\./||'
+SRC=$(find . -name '*.c')
+INC=$(find . -name '*.h')
+OBJ=$(find . -name '*.c' | sed 's/\.c$/.o/')
+
+_cmd() {
+	command -v "$1" > /dev/null
 }
 
-OBJ=$(src | sed 's/\.c$/.o/g' | tr '\n' ' ')
+CFLAGS='-std=c99 -Wall -pedantic'
+LDFLAGS='-lcurses'
 
-repl() {
-    sed -e "s/^$1.*$/$1 = $2/"
-}
+if _cmd clang; then
+	CC='clang'
+	CFLAGS='-std=c99 -Weverything'
+elif _cmd gcc; then
+	CC='gcc'
+else
+	CC='c99'
+fi
 
-MKFILE=Makefile
-OFILE=${*:-$MKFILE}
-TMPFILE=tmp.mk
+cat <<EOF > Makefile
+.PHONY: clean
 
-[ "${OFILE}" = - ] && OFILE=/dev/stdout
+${EXE}: ${OBJ} ${INC}
+	${CC} ${CFLAGS} ${LDFLAGS} ${SRC} -o ${EXE}
 
-for lib in ${LIBS}; do
-    LDFLAGS="${LDFLAGS}-l${lib} "
-done
-
-repl CFLAGS "${CFLAGS}" < ${MKFILE} |
-    repl LDFLAGS "${LDFLAGS}"       |
-    repl OBJ     "${OBJ}"           |
-    repl CFLAGS  "${CFLAGS}"        |
-    repl EXE     "${EXE}"           > ${TMPFILE}
-
-echo "$0 > ${OFILE}"
-
-cat ${TMPFILE} > "${OFILE}"
-rm ${TMPFILE}
+clean:
+	@rm -fv ${EXE} ${OBJ}
+EOF
