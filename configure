@@ -1,6 +1,7 @@
 #!/bin/sh
 
 EXE=${EXE:-a.out}
+BIN=${BIN:-/usr/local/bin}
 
 SRC=$(find . -name '*.c')
 INC=$(find . -name '*.h')
@@ -23,11 +24,14 @@ else
 fi
 
 cat <<EOF > Makefile
-.PHONY: clean
+.PHONY: clean install
 
 ${EXE}: ${OBJ} ${INC}
 	${CC} ${CFLAGS} ${LDFLAGS} ${SRC} -o ${EXE}
 
 clean:
 	@rm -fv ${EXE} ${OBJ}
+
+install: ${EXE}
+	@mv -v ${EXE} ${BIN}/${EXE}
 EOF
