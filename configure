@@ -1,7 +1,7 @@
 #!/bin/sh
 
 EXE=${EXE:-a.out}
-BIN=${BIN:-/usr/local/bin}
+DESTDIR=${DESTDIR:-/usr/local/bin}
 
 SRC=$(find . -name '*.c')
 INC=$(find . -name '*.h')
@@ -35,5 +35,5 @@ clean:
 	@rm -fv ${EXE} ${OBJ}
 
 install: ${EXE}
-	@mv -v ${EXE} ${BIN}/${EXE}
+	@mv -v ${EXE} ${DESTDIR}/${EXE}
 EOF
