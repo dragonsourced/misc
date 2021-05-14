@@ -34,7 +34,7 @@ function Doc(body, metadata, variables)
 	local s = [[\def\maketitle\par{]]
 	for _, p in ipairs({
 		{"title", [[\centerline{\the\title}]]},
-		{"subtitle", [[\centerline{\the\subtitle}]]},
+		{"subtitle", [[\centerline{\sl\the\subtitle}]]},
 		{"author", [[\centerline{\the\author}]]},
 		{"date", [[\centerline{\the\date}]]}
 	}) do
