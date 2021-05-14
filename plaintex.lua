@@ -6,6 +6,10 @@ A Pandoc writer to output Plain TeX.
 
 local notes = {}
 
+function RawInline(s)
+	return s
+end
+
 function Str(s)
 	return s
 	:gsub("—", "---")
