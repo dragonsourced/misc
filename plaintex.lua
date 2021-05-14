@@ -128,6 +128,33 @@ function DisplayMath(s)
 	return "$$" .. s .. "$$"
 end
 
+function Span(s)
+	return s
+end
+
+local function codesc(s)
+	return s:gsub(".", function(x)
+		if x:match("[{}#$^_\\]") then
+			return "\\string" .. x
+		else
+			return x
+		end
+	end)
+end
+
+function Code(s)
+	return "{\\tt " .. codesc(s) .. "}"
+end
+
+function CodeBlock(s)
+	s = codesc(s)
+	s = "\\noindent" .. s
+	:gsub("  +", function(x)
+		return "\\hbox to " .. x:len() .. "em{}"
+	end):gsub("\n", "\n\\par\\noindent ")
+	return "\\bigskip{\\tt " .. s .. "}\\bigskip"
+end
+
 local meta = {}
 meta.__index =
 	function(_, key)
